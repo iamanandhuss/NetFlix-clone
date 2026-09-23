@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import netflixIcon from "../assets/netflixIcon.png";
 import { VscChevronUp } from "react-icons/vsc";
+import { useApp } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
+import handleSendEmail from "../services/SentEmail"; 
+
+
 
 const ConfirmPage = () => {
+  
+  useEffect(()=>{
+   handleSendEmail(Email)
+  },[])
+
+  const navigate = useNavigate();
+  const {Email}=useApp();
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-red-950 to-black">
       {/* Header */}
@@ -29,9 +41,9 @@ const ConfirmPage = () => {
           </h2>
 
           <div className="mt-4 mb-4 rounded-md bg-zinc-800 flex justify-between items-center px-5 py-4">
-            <h1 className="text-gray-200 text-sm">example@gmail.com</h1>
+            <h1 className="text-gray-200 text-sm">{Email}</h1>
 
-            <button className="text-white hover:text-gray-300 underline font-medium">
+            <button onClick={() => navigate("/login")} className="text-white hover:text-gray-300 underline font-medium">
               Change
             </button>
           </div>

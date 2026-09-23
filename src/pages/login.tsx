@@ -1,8 +1,28 @@
 import React from "react";
 import netflixIcon from "../assets/netflixIcon.png";
 import { VscChevronUp } from "react-icons/vsc";
-
+import { useApp } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
+import handleSendEmail from "../services/SentEmail";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../FireBase/Firebase";
+import { useEffect } from "react";
+import {UserAuth} from "../context/Auth";
 const Login = () => {
+  const navigate = useNavigate();
+  const handleContinue = async() => {
+    const result = await signInWithPopup(auth, provider);
+    console.log("user", result.user);
+    // handleSendEmail(Email)
+    // navigate("/ConfirmPage");
+  };
+  const {user}=UserAuth();
+  const { Email, setEmail } = useApp();
+    useEffect(() => {
+    if (user) {
+      navigate("/Home");
+    }
+  }, [user]);
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-red-950 to-black">
       {/* Header */}
@@ -29,6 +49,8 @@ const Login = () => {
 
           <div className="pt-8">
             <input
+              value={Email}
+              onChange={(e) => setEmail(e.target.value)} // Updates state on type
               type="email"
               placeholder="Email or mobile number"
               className="px-5 py-4 w-full bg-black/60 border border-gray-500 rounded-md outline-none focus:border-white"
@@ -36,25 +58,28 @@ const Login = () => {
           </div>
 
           <div className="pt-6">
-            <button className="bg-red-600 hover:bg-red-700 transition py-4 w-full rounded-md text-xl font-semibold">
+            <button
+              onClick={handleContinue}
+              className="bg-red-600 hover:bg-red-700 transition py-4 w-full rounded-md text-xl font-semibold"
+            >
               Continue
             </button>
             <div className=" group relative">
-                <h1 className="pt-10 flex items-center gap-2">
-              Get Help
-              <VscChevronUp className="group-hover:rotate-180" />
-            </h1>{" "}
-            <h1 className="pt-1 items-center gap-2 underline hidden group-hover:flex transition-all duration-300 ease-in">
-              Forgot email or mobile number?
-            </h1>
-            <h1 className="pt-1 items-center gap-2 underline hidden group-hover:flex transition-all duration-300 ease-in">
-              Learn more about sign-in
-            </h1>{" "}
-            <p className="absolute pt-10">
-              {" "}
-              This page is protected by Google reCAPTCHA to ensure you're not a
-              bot.
-            </p>
+              <h1 className="pt-10 flex items-center gap-2">
+                Get Help
+                <VscChevronUp className="group-hover:rotate-180" />
+              </h1>{" "}
+              <h1 className="pt-1 items-center gap-2 underline hidden group-hover:flex transition-all duration-300 ease-in">
+                Forgot email or mobile number?
+              </h1>
+              <h1 className="pt-1 items-center gap-2 underline hidden group-hover:flex transition-all duration-300 ease-in">
+                Learn more about sign-in
+              </h1>{" "}
+              <p className="absolute pt-10">
+                {" "}
+                This page is protected by Google reCAPTCHA to ensure you're not
+                a bot.
+              </p>
             </div>
           </div>
         </div>

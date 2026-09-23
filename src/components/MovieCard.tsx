@@ -1,11 +1,17 @@
 import React from "react";
 
-export const Card: React.FC<{ count: number; poster: string }> = ({
+export const Card: React.FC<{ count: number; poster: string;toggleModal:any ;setselectedMovie:any;item:{}}> = ({
   count,
   poster,
+  toggleModal,
+  setselectedMovie,
+  item
 }) => {
   return (
-    <div className="relative m-10">
+    <div
+      className="relative m-10 cursor-pointer"
+      onClick={()=>{toggleModal();setselectedMovie(item)}}
+    >
       <div
         className="
           w-52
